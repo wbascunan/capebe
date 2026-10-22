@@ -24,6 +24,7 @@ import com.example.capebe.ui.viewmodel.GestionVuelosViewModel
 @Composable
 fun VuelosScreen(
     onNavigateToRegistroVuelo: () -> Unit,
+    onNavigateToAsignacion: () -> Unit,
     onNavigateToOperador: () -> Unit,
     viewModel: GestionVuelosViewModel = viewModel()
 ) {
@@ -140,10 +141,26 @@ fun VuelosScreen(
 
             Button(
                 onClick = {
-                    onNavigateToOperador()
+                    onNavigateToAsignacion()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Text(text = "Asignar Pasajeros")
+            }
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Button(
+                onClick = {
+                    onNavigateToOperador()
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+
+            {
                 Text(text = "← Volver")
             }
         }

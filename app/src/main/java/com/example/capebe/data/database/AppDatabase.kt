@@ -10,14 +10,17 @@ import com.example.capebe.data.local.dao.PasajeroDao
 import com.example.capebe.data.local.entity.PasajeroEntity
 import com.example.capebe.data.local.dao.VueloDao
 import com.example.capebe.data.local.entity.VueloEntity
+import com.example.capebe.data.local.dao.AsignacionDao
+import com.example.capebe.data.local.entity.AsignacionEntity
 
 @Database(
     entities = [
         UsuarioEntity::class,
         PasajeroEntity::class,
-        VueloEntity::class
+        VueloEntity::class,
+        AsignacionEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -25,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun usuarioDao(): UsuarioDao
     abstract fun pasajeroDao(): PasajeroDao
     abstract fun vueloDao(): VueloDao
+    abstract fun asignacionDao(): AsignacionDao
 
     companion object {
 

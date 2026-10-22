@@ -13,6 +13,7 @@ import com.example.capebe.ui.screen.RegisterScreen
 import com.example.capebe.ui.screen.RegistroPasajeroScreen
 import com.example.capebe.ui.screen.RegistroVueloScreen
 import com.example.capebe.ui.screen.VuelosScreen
+import com.example.capebe.ui.screen.AsignacionScreen
 
 object Routes {
     const val INICIO = "inicio"
@@ -24,6 +25,7 @@ object Routes {
     const val VUELOS = "vuelos"
     const val REGISTRO_VUELO = "registro_vuelo"
     const val CONSENTIMIENTO = "consentimiento"
+    const val ASIGNACION = "asignacion"
 }
 
 @Composable
@@ -98,11 +100,15 @@ fun AppNavigation() {
                 onNavigateToRegistroVuelo = {
                     navController.navigate(Routes.REGISTRO_VUELO)
                 },
+                onNavigateToAsignacion = {
+                    navController.navigate(Routes.ASIGNACION)
+                },
                 onNavigateToOperador = {
                     navController.navigate(Routes.OPERADOR)
                 }
             )
         }
+
         composable(Routes.REGISTRO_VUELO) {
             RegistroVueloScreen(
                 onNavigateToVuelos = {
@@ -115,6 +121,14 @@ fun AppNavigation() {
             ConsentimientoScreen(
                 onNavigateToPasajeros = {
                     navController.navigate(Routes.PASAJEROS)
+                }
+            )
+        }
+
+        composable(Routes.ASIGNACION) {
+            AsignacionScreen(
+                onNavigateToVuelos = {
+                    navController.navigate(Routes.VUELOS)
                 }
             )
         }
