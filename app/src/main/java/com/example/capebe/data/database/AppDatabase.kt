@@ -6,15 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.capebe.data.local.dao.UsuarioDao
 import com.example.capebe.data.local.entity.UsuarioEntity
+import com.example.capebe.data.local.dao.PasajeroDao
+import com.example.capebe.data.local.entity.PasajeroEntity
 
 @Database(
-    entities = [UsuarioEntity::class],
-    version = 1,
+    entities = [
+        UsuarioEntity::class,
+        PasajeroEntity::class
+    ],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun usuarioDao(): UsuarioDao
+    abstract fun pasajeroDao(): PasajeroDao
 
     companion object {
 
