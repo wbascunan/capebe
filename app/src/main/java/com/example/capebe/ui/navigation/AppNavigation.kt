@@ -97,10 +97,12 @@ fun AppNavigation() {
             VuelosScreen(
                 onNavigateToRegistroVuelo = {
                     navController.navigate(Routes.REGISTRO_VUELO)
+                },
+                onNavigateToOperador = {
+                    navController.navigate(Routes.OPERADOR)
                 }
             )
         }
-
         composable(Routes.REGISTRO_VUELO) {
             RegistroVueloScreen(
                 onNavigateToVuelos = {
