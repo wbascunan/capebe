@@ -106,7 +106,11 @@ fun AppNavigation() {
         }
 
         composable(Routes.CONSENTIMIENTO) {
-            ConsentimientoScreen()
+            ConsentimientoScreen(
+                onNavigateToPasajeros = {
+                    navController.navigate(Routes.PASAJEROS)
+                }
+            )
         }
     }
 }

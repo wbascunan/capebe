@@ -11,5 +11,6 @@ data class PasajeroEntity(
     val nombreCompleto: String,
     val categoria: String,
     val peso: Double,
-    val estadoConsentimiento: String = "Pendiente"
+    val estadoConsentimiento: String = "Pendiente",
+    val firma: String = ""
 )

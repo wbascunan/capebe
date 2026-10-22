@@ -17,4 +17,12 @@ interface PasajeroDao {
 
     @Query("SELECT * FROM passengers WHERE id = :id LIMIT 1")
     suspend fun obtenerPasajeroPorId(id: Int): PasajeroEntity?
+
+    @Query("SELECT * FROM passengers ORDER BY id DESC LIMIT 1")
+    suspend fun obtenerUltimoPasajero(): PasajeroEntity?
+
+    @Query(
+        "UPDATE passengers SET estadoConsentimiento = 'Firmado', firma = :firma WHERE id = :id"
+    )
+    suspend fun firmarConsentimiento(id: Int, firma: String)
 }
