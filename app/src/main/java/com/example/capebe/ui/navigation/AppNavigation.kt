@@ -48,14 +48,17 @@ fun AppNavigation() {
             LoginScreen(
                 onNavigateToRegister = {
                     navController.navigate(Routes.REGISTER)
+                },
+                onLoginSuccess = {
+                    navController.navigate(Routes.OPERADOR)
                 }
             )
         }
 
         composable(Routes.REGISTER) {
             RegisterScreen(
-                onNavigateToOperador = {
-                    navController.navigate(Routes.OPERADOR)
+                onNavigateToLogin = {
+                    navController.navigate(Routes.LOGIN)
                 }
             )
         }
