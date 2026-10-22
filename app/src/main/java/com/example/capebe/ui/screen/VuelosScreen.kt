@@ -26,6 +26,7 @@ fun VuelosScreen(
     onNavigateToRegistroVuelo: () -> Unit,
     onNavigateToAsignacion: () -> Unit,
     onNavigateToOperador: () -> Unit,
+    onNavigateToCamara: () -> Unit,
     viewModel: GestionVuelosViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -146,6 +147,19 @@ fun VuelosScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Asignar Pasajeros")
+            }
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Button(
+                onClick = {
+                    onNavigateToCamara()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Tomar Evidencia")
             }
 
             Spacer(
