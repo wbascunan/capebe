@@ -78,6 +78,9 @@ fun AppNavigation() {
             PasajerosScreen(
                 onNavigateToRegistroPasajero = {
                     navController.navigate(Routes.REGISTRO_PASAJERO)
+                },
+                onNavigateToOperador = {
+                    navController.navigate(Routes.OPERADOR)
                 }
             )
         }
