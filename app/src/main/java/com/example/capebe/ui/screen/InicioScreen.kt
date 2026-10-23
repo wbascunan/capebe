@@ -23,6 +23,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.example.capebe.R
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun InicioScreen(
@@ -50,12 +58,18 @@ fun InicioScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(
-                        id = R.drawable.logo_capebe
-                    ),
+                    painter = painterResource(id = R.drawable.logo_capebe),
                     contentDescription = "Logo CAPEBE",
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(180.dp)
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(220.dp)
+                        .shadow(12.dp, shape = CircleShape)
+                        .clip(CircleShape)
+                        .border(
+                            4.dp,
+                            Color(0xFF17324D),
+                            CircleShape
+                        )
                 )
 
                 Spacer(
