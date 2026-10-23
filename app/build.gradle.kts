@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation(libs.androidx.compose.foundation.layout)
 
     val room_version = "2.8.4"
     implementation("androidx.room:room-runtime:$room_version")
