@@ -22,6 +22,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.components.Header
 import com.example.capebe.ui.viewmodel.AsignacionViewModel
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.getValue
 
 @Composable
 fun AsignacionScreen(
@@ -87,16 +90,34 @@ fun AsignacionScreen(
 
                     for (pasajero in viewModel.pasajeros) {
 
+                        val colorPasajero by animateColorAsState(
+                            targetValue =
+                                if (state.pasajeroId == pasajero.id) {
+                                    Color(0xFF2E7D32)
+                                } else {
+                                    MaterialTheme.colorScheme.primary
+                                },
+                            label = "colorPasajero"
+                        )
+
                         Button(
                             onClick = {
                                 viewModel.seleccionarPasajero(
                                     pasajero.id
                                 )
                             },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorPasajero
+                            )
                         ) {
                             Text(
-                                text = pasajero.nombreCompleto
+                                text =
+                                    if (state.pasajeroId == pasajero.id) {
+                                        "✓ ${pasajero.nombreCompleto}"
+                                    } else {
+                                        pasajero.nombreCompleto
+                                    }
                             )
                         }
 
@@ -124,16 +145,34 @@ fun AsignacionScreen(
 
                     for (vuelo in viewModel.vuelos) {
 
+                        val colorVuelo by animateColorAsState(
+                            targetValue =
+                                if (state.vueloId == vuelo.id) {
+                                    Color(0xFF2E7D32)
+                                } else {
+                                    MaterialTheme.colorScheme.primary
+                                },
+                            label = "colorVuelo"
+                        )
+
                         Button(
                             onClick = {
                                 viewModel.seleccionarVuelo(
                                     vuelo.id
                                 )
                             },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorVuelo
+                            )
                         ) {
                             Text(
-                                text = "${vuelo.matricula} - ${vuelo.modelo}"
+                                text =
+                                    if (state.vueloId == vuelo.id) {
+                                        "✓ ${vuelo.matricula} - ${vuelo.modelo}"
+                                    } else {
+                                        "${vuelo.matricula} - ${vuelo.modelo}"
+                                    }
                             )
                         }
 
