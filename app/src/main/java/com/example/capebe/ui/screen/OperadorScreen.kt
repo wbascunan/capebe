@@ -14,16 +14,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.components.Header
+import com.example.capebe.ui.viewmodel.ResumenOperacionalViewModel
 
 @Composable
 fun OperadorScreen(
     onNavigateToPasajeros: () -> Unit,
-    onNavigateToVuelos: () -> Unit
+    onNavigateToVuelos: () -> Unit,
+    viewModel: ResumenOperacionalViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             Header(title = "INICIO DEL OPERADOR")
@@ -53,11 +59,47 @@ fun OperadorScreen(
             )
 
             Text(
-                text = "Selecciona una opción para comenzar"
+                text = "Resumen operacional de la jornada"
             )
 
             Spacer(
-                modifier = Modifier.height(32.dp)
+                modifier = Modifier.height(16.dp)
+            )
+
+            Button(
+                onClick = {
+                    viewModel.cargarResumen(context)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Actualizar Resumen")
+            }
+
+            if (viewModel.resumenCargado) {
+
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
+
+                Text(
+                    text = "Pasajeros registrados: ${viewModel.totalPasajeros}"
+                )
+
+                Text(
+                    text = "Consentimientos firmados: ${viewModel.consentimientosFirmados}"
+                )
+
+                Text(
+                    text = "Vuelos registrados: ${viewModel.totalVuelos}"
+                )
+
+                Text(
+                    text = "Asignaciones realizadas: ${viewModel.totalAsignaciones}"
+                )
+            }
+
+            Spacer(
+                modifier = Modifier.height(24.dp)
             )
 
             Button(
@@ -72,7 +114,7 @@ fun OperadorScreen(
             }
 
             Spacer(
-                modifier = Modifier.height(16.dp)
+                modifier = Modifier.height(12.dp)
             )
 
             Button(
