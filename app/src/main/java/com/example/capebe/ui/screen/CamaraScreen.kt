@@ -1,5 +1,6 @@
 package com.example.capebe.ui.screen
 
+import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
@@ -30,12 +32,31 @@ fun CamaraScreen(
     onNavigateToVuelos: () -> Unit,
     viewModel: CamaraViewModel = viewModel()
 ) {
+    val context = LocalContext.current
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
 
         viewModel.actualizarFoto(bitmap)
+    }
+
+    val imageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+
+        if (uri != null) {
+
+            val inputStream =
+                context.contentResolver.openInputStream(uri)
+
+            val bitmap =
+                BitmapFactory.decodeStream(inputStream)
+
+            viewModel.actualizarFoto(bitmap)
+
+            inputStream?.close()
+        }
     }
 
     Scaffold(
@@ -72,6 +93,19 @@ fun CamaraScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Abrir Cámara")
+            }
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Button(
+                onClick = {
+                    imageLauncher.launch("image/*")
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Seleccionar Imagen")
             }
 
             if (viewModel.foto != null) {
