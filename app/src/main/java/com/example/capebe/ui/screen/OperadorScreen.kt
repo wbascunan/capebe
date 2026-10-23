@@ -1,6 +1,5 @@
 package com.example.capebe.ui.screen
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,12 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,7 +32,7 @@ fun OperadorScreen(
 
     Scaffold(
         topBar = {
-            Header(title = "INICIO DEL OPERADOR")
+            Header(title = "CAPEBE")
         },
         bottomBar = {
             Footer()
@@ -43,24 +43,114 @@ fun OperadorScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(20.dp)
         ) {
 
             Text(
-                text = "Panel del Operador",
+                text = "Panel operacional",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
 
+            Text(
+                text = "Gestiona pasajeros, vuelos y operaciones de la jornada.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
+
             Spacer(
-                modifier = Modifier.height(8.dp)
+                modifier = Modifier.height(24.dp)
             )
 
             Text(
-                text = "Resumen operacional de la jornada"
+                text = "Resumen de la jornada",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
+
+            Spacer(
+                modifier = Modifier.height(12.dp)
+            )
+
+            if (viewModel.resumenCargado) {
+
+                Text(
+                    text = "Pasajeros registrados",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+
+                Text(
+                    text = "${viewModel.totalPasajeros}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+
+                Text(
+                    text = "Consentimientos firmados",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+
+                Text(
+                    text = "${viewModel.consentimientosFirmados} de ${viewModel.totalPasajeros}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color =
+                        if (
+                            viewModel.totalPasajeros > 0 &&
+                            viewModel.consentimientosFirmados ==
+                            viewModel.totalPasajeros
+                        ) {
+                            Color(0xFF2E7D32)
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        }
+                )
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+
+                Text(
+                    text = "Vuelos registrados",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+
+                Text(
+                    text = "${viewModel.totalVuelos}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+
+                Text(
+                    text = "Asignaciones realizadas",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+
+                Text(
+                    text = "${viewModel.totalAsignaciones}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
+
+                Text(
+                    text = "Actualiza el resumen para ver el estado actual de la operación.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+            }
 
             Spacer(
                 modifier = Modifier.height(16.dp)
@@ -70,48 +160,36 @@ fun OperadorScreen(
                 onClick = {
                     viewModel.cargarResumen(context)
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF5F6368)
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Actualizar Resumen")
-            }
-
-            if (viewModel.resumenCargado) {
-
-                Spacer(
-                    modifier = Modifier.height(16.dp)
-                )
-
                 Text(
-                    text = "Pasajeros registrados: ${viewModel.totalPasajeros}"
-                )
-
-                Text(
-                    text = "Consentimientos firmados: ${viewModel.consentimientosFirmados}"
-                )
-
-                Text(
-                    text = "Vuelos registrados: ${viewModel.totalVuelos}"
-                )
-
-                Text(
-                    text = "Asignaciones realizadas: ${viewModel.totalAsignaciones}"
+                    text =
+                        if (viewModel.resumenCargado) {
+                            "Actualizar Resumen"
+                        } else {
+                            "Cargar Resumen"
+                        }
                 )
             }
 
             Spacer(
-                modifier = Modifier.height(24.dp)
+                modifier = Modifier.height(28.dp)
             )
 
-            Button(
-                onClick = {
-                    onNavigateToPasajeros()
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.7f)
-                    .height(56.dp)
-            ) {
-                Text(text = "Pasajeros")
-            }
+            Text(
+                text = "Gestión",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Selecciona el área en la que deseas trabajar.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
 
             Spacer(
                 modifier = Modifier.height(12.dp)
@@ -119,13 +197,34 @@ fun OperadorScreen(
 
             Button(
                 onClick = {
+                    onNavigateToPasajeros()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(58.dp)
+            ) {
+                Text(
+                    text = "Gestionar Pasajeros",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(
+                modifier = Modifier.height(10.dp)
+            )
+
+            Button(
+                onClick = {
                     onNavigateToVuelos()
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
-                    .height(56.dp)
+                    .fillMaxWidth()
+                    .height(58.dp)
             ) {
-                Text(text = "Vuelos")
+                Text(
+                    text = "Gestionar Vuelos",
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

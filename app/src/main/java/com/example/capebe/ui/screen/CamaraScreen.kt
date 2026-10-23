@@ -4,7 +4,6 @@ import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,15 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
@@ -34,30 +35,37 @@ fun CamaraScreen(
 ) {
     val context = LocalContext.current
 
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicturePreview()
-    ) { bitmap ->
-
-        viewModel.actualizarFoto(bitmap)
-    }
-
-    val imageLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri ->
-
-        if (uri != null) {
-
-            val inputStream =
-                context.contentResolver.openInputStream(uri)
-
-            val bitmap =
-                BitmapFactory.decodeStream(inputStream)
+    val cameraLauncher =
+        rememberLauncherForActivityResult(
+            contract =
+                ActivityResultContracts.TakePicturePreview()
+        ) { bitmap ->
 
             viewModel.actualizarFoto(bitmap)
-
-            inputStream?.close()
         }
-    }
+
+    val imageLauncher =
+        rememberLauncherForActivityResult(
+            contract =
+                ActivityResultContracts.GetContent()
+        ) { uri ->
+
+            if (uri != null) {
+
+                val inputStream =
+                    context.contentResolver
+                        .openInputStream(uri)
+
+                val bitmap =
+                    BitmapFactory.decodeStream(
+                        inputStream
+                    )
+
+                viewModel.actualizarFoto(bitmap)
+
+                inputStream?.close()
+            }
+        }
 
     Scaffold(
         topBar = {
@@ -72,18 +80,39 @@ fun CamaraScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(20.dp)
         ) {
 
             Text(
-                text = "Registro Fotográfico",
-                style = MaterialTheme.typography.headlineMedium
+                text = "Registro de evidencia",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Adjunta una fotografía como respaldo de la operación.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
             )
 
             Spacer(
-                modifier = Modifier.height(16.dp)
+                modifier = Modifier.height(24.dp)
+            )
+
+            Text(
+                text = "Capturar nueva evidencia",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Utiliza la cámara del dispositivo para tomar una fotografía.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+
+            Spacer(
+                modifier = Modifier.height(10.dp)
             )
 
             Button(
@@ -92,17 +121,36 @@ fun CamaraScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Abrir Cámara")
+                Text(text = "Tomar Fotografía")
             }
 
             Spacer(
-                modifier = Modifier.height(8.dp)
+                modifier = Modifier.height(20.dp)
+            )
+
+            Text(
+                text = "O seleccionar una existente",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Puedes utilizar una imagen disponible en el dispositivo.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+
+            Spacer(
+                modifier = Modifier.height(10.dp)
             )
 
             Button(
                 onClick = {
                     imageLauncher.launch("image/*")
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF5F6368)
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Seleccionar Imagen")
@@ -111,16 +159,40 @@ fun CamaraScreen(
             if (viewModel.foto != null) {
 
                 Spacer(
-                    modifier = Modifier.height(16.dp)
+                    modifier = Modifier.height(24.dp)
+                )
+
+                Text(
+                    text = "Evidencia seleccionada",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
                 )
 
                 Image(
-                    bitmap = viewModel.foto!!.asImageBitmap(),
-                    contentDescription = "Evidencia operacional",
-                    contentScale = ContentScale.Fit,
+                    bitmap =
+                        viewModel.foto!!
+                            .asImageBitmap(),
+                    contentDescription =
+                        "Evidencia operacional",
+                    contentScale =
+                        ContentScale.Fit,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp)
+                        .height(220.dp)
+                )
+
+                Spacer(
+                    modifier = Modifier.height(8.dp)
+                )
+
+                Text(
+                    text = "✓ Evidencia cargada correctamente",
+                    color = Color(0xFF2E7D32),
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(
@@ -131,20 +203,29 @@ fun CamaraScreen(
                     onClick = {
                         viewModel.eliminarFoto()
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor =
+                                Color(0xFF5F6368)
+                        ),
+                    modifier =
+                        Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "Eliminar Foto")
+                    Text(text = "Quitar Evidencia")
                 }
             }
 
             Spacer(
-                modifier = Modifier.height(8.dp)
+                modifier = Modifier.height(20.dp)
             )
 
             Button(
                 onClick = {
                     onNavigateToVuelos()
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF5F6368)
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "← Volver")

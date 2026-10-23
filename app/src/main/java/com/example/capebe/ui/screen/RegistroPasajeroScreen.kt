@@ -1,7 +1,6 @@
 package com.example.capebe.ui.screen
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,15 +9,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,6 +29,7 @@ import com.example.capebe.ui.viewmodel.PasajeroViewModel
 @Composable
 fun RegistroPasajeroScreen(
     onNavigateToConsentimiento: () -> Unit,
+    onNavigateToPasajeros: () -> Unit,
     viewModel: PasajeroViewModel = viewModel()
 ) {
     val state = viewModel.uiState
@@ -36,7 +37,7 @@ fun RegistroPasajeroScreen(
 
     Scaffold(
         topBar = {
-            Header(title = "REGISTRO DE PASAJERO")
+            Header(title = "REGISTRAR PASAJERO")
         },
         bottomBar = {
             Footer()
@@ -47,18 +48,35 @@ fun RegistroPasajeroScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(20.dp)
         ) {
 
             Text(
-                text = "Nuevo Pasajero",
-                style = MaterialTheme.typography.headlineMedium
+                text = "Nuevo pasajero",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Ingresa los datos de la persona que participará en la operación.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
             )
 
             Spacer(
-                modifier = Modifier.height(16.dp)
+                modifier = Modifier.height(18.dp)
+            )
+
+            // IDENTIFICACIÓN
+
+            Text(
+                text = "Identificación",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
             )
 
             OutlinedTextField(
@@ -67,14 +85,20 @@ fun RegistroPasajeroScreen(
                     viewModel.onCedulaChanged(it)
                 },
                 label = {
-                    Text("Cédula de Identidad")
+                    Text("Cédula de identidad")
                 },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Text(
+                text = "Documento utilizado para identificar al pasajero.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+
             Spacer(
-                modifier = Modifier.height(12.dp)
+                modifier = Modifier.height(8.dp)
             )
 
             OutlinedTextField(
@@ -83,18 +107,28 @@ fun RegistroPasajeroScreen(
                     viewModel.onNombreChanged(it)
                 },
                 label = {
-                    Text("Nombre Completo")
+                    Text("Nombre completo")
                 },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(
-                modifier = Modifier.height(16.dp)
+                modifier = Modifier.height(18.dp)
+            )
+
+            // CATEGORÍA
+
+            Text(
+                text = "Categoría",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "Categoría"
+                text = "Selecciona la categoría correspondiente.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
             )
 
             Spacer(
@@ -105,9 +139,24 @@ fun RegistroPasajeroScreen(
                 onClick = {
                     viewModel.onCategoriaChanged("Socio Club")
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                        if (state.categoria == "Socio Club") {
+                            Color(0xFF2E7D32)
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        }
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Socio Club")
+                Text(
+                    text =
+                        if (state.categoria == "Socio Club") {
+                            "✓ Socio Club"
+                        } else {
+                            "Socio Club"
+                        }
+                )
             }
 
             Spacer(
@@ -120,24 +169,46 @@ fun RegistroPasajeroScreen(
                         "Socio Bienestar BancoEstado"
                     )
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                        if (
+                            state.categoria ==
+                            "Socio Bienestar BancoEstado"
+                        ) {
+                            Color(0xFF2E7D32)
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        }
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Socio Bienestar BancoEstado")
-            }
-
-            if (state.categoria.isNotBlank()) {
-
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
-
                 Text(
-                    text = "Seleccionado: ${state.categoria}"
+                    text =
+                        if (
+                            state.categoria ==
+                            "Socio Bienestar BancoEstado"
+                        ) {
+                            "✓ Socio Bienestar BancoEstado"
+                        } else {
+                            "Socio Bienestar BancoEstado"
+                        }
                 )
             }
 
             Spacer(
-                modifier = Modifier.height(12.dp)
+                modifier = Modifier.height(18.dp)
+            )
+
+            // DATOS OPERACIONALES
+
+            Text(
+                text = "Datos operacionales",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
             )
 
             OutlinedTextField(
@@ -148,11 +219,20 @@ fun RegistroPasajeroScreen(
                 label = {
                     Text("Peso verificado")
                 },
-                singleLine = true,
+                suffix = {
+                    Text("kg")
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Decimal
                 ),
+                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
+            )
+
+            Text(
+                text = "Ingresa el peso verificado del pasajero.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
             )
 
             if (state.errorMessage != null) {
@@ -163,13 +243,12 @@ fun RegistroPasajeroScreen(
 
                 Text(
                     text = state.errorMessage,
-                    color = Color.Red,
-                    style = MaterialTheme.typography.bodyMedium
+                    color = Color.Red
                 )
             }
 
             Spacer(
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.height(18.dp)
             )
 
             Button(
@@ -188,7 +267,23 @@ fun RegistroPasajeroScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Registrar Pasajero")
+                Text(text = "Continuar a Consentimiento")
+            }
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Button(
+                onClick = {
+                    onNavigateToPasajeros()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF5F6368)
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "← Volver")
             }
         }
     }

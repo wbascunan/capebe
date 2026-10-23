@@ -62,11 +62,21 @@ class PasajeroViewModel : ViewModel() {
             return
         }
 
-        val pesoPasajero = state.peso.toDoubleOrNull()
+        val pesoPasajero =
+            state.peso
+                .replace(",", ".")
+                .toDoubleOrNull()
 
         if (pesoPasajero == null) {
             uiState = uiState.copy(
                 errorMessage = "Ingresa un peso válido."
+            )
+            return
+        }
+
+        if (pesoPasajero <= 0) {
+            uiState = uiState.copy(
+                errorMessage = "El peso debe ser mayor a 0 kg."
             )
             return
         }

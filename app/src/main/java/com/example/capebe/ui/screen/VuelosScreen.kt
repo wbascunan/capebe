@@ -20,6 +20,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.components.Header
 import com.example.capebe.ui.viewmodel.GestionVuelosViewModel
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import kotlin.math.roundToInt
+import androidx.compose.material3.ButtonDefaults
 
 @Composable
 fun VuelosScreen(
@@ -64,7 +68,7 @@ fun VuelosScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Consultar Vuelos")
+                Text(text = "Actualizar Vuelos")
             }
 
             Spacer(
@@ -91,13 +95,31 @@ fun VuelosScreen(
 
                     for (vuelo in viewModel.vuelos) {
 
+                        val minutos =
+                            (vuelo.horasVueloConsumidas * 60)
+                                .roundToInt()
+
+                        val horasTexto =
+                            String.format(
+                                "%.2f",
+                                vuelo.horasVueloConsumidas
+                            )
+                                .trimEnd('0')
+                                .trimEnd('.', ',')
+
                         Text(
                             text = vuelo.matricula,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "Modelo: ${vuelo.modelo}"
+                            text = vuelo.modelo,
+                            color = Color.Gray
+                        )
+
+                        Spacer(
+                            modifier = Modifier.height(6.dp)
                         )
 
                         Text(
@@ -108,20 +130,22 @@ fun VuelosScreen(
                             text = "Tripulantes: ${vuelo.numeroTripulantes}"
                         )
 
-                        Text(
-                            text = "Horómetro inicial: ${vuelo.horometroInicial}"
+                        Spacer(
+                            modifier = Modifier.height(6.dp)
                         )
 
                         Text(
-                            text = "Horómetro final: ${vuelo.horometroFinal}"
+                            text = "Horómetro: ${vuelo.horometroInicial} → ${vuelo.horometroFinal}"
                         )
 
                         Text(
-                            text = "Horas consumidas: ${vuelo.horasVueloConsumidas}"
+                            text = "Tiempo de vuelo: $horasTexto h · $minutos min",
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
                         )
 
                         Spacer(
-                            modifier = Modifier.height(16.dp)
+                            modifier = Modifier.height(24.dp)
                         )
                     }
                 }
@@ -159,7 +183,7 @@ fun VuelosScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Tomar Evidencia")
+                Text(text = "Evidencia operacional")
             }
 
             Spacer(
@@ -170,11 +194,11 @@ fun VuelosScreen(
                 onClick = {
                     onNavigateToOperador()
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF5F6368)
+                ),
                 modifier = Modifier.fillMaxWidth()
-            )
-
-
-            {
+            ) {
                 Text(text = "← Volver")
             }
         }

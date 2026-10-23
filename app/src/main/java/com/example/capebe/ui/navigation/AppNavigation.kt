@@ -93,6 +93,9 @@ fun AppNavigation() {
             RegistroPasajeroScreen(
                 onNavigateToConsentimiento = {
                     navController.navigate(Routes.CONSENTIMIENTO)
+                },
+                onNavigateToPasajeros = {
+                    navController.navigate(Routes.PASAJEROS)
                 }
             )
         }

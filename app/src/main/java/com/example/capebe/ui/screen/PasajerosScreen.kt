@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.components.Header
 import com.example.capebe.ui.viewmodel.GestionPasajerosViewModel
+import androidx.compose.ui.text.font.FontWeight
 
 
 @Composable
@@ -50,7 +51,7 @@ fun PasajerosScreen(
         ) {
 
             Text(
-                text = "Gestión de Pasajeros",
+                text = "Pasajeros registrados",
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -64,7 +65,7 @@ fun PasajerosScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Consultar Pasajeros")
+                Text(text = "Actualizar Pasajeros")
             }
 
             Spacer(
@@ -93,11 +94,17 @@ fun PasajerosScreen(
 
                         Text(
                             text = pasajero.nombreCompleto,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "Cédula: ${pasajero.cedulaIdentidad}"
+                            text = "Cédula: ${pasajero.cedulaIdentidad}",
+                            color = Color.Gray
+                        )
+
+                        Spacer(
+                            modifier = Modifier.height(6.dp)
                         )
 
                         Text(
@@ -105,7 +112,7 @@ fun PasajerosScreen(
                         )
 
                         Text(
-                            text = "Peso: ${pasajero.peso} kg"
+                            text = "Peso verificado: ${pasajero.peso} kg"
                         )
 
                         Text(
@@ -115,11 +122,12 @@ fun PasajerosScreen(
                                     Color(0xFF2E7D32)
                                 } else {
                                     Color.Red
-                                }
+                                },
+                            fontWeight = FontWeight.Bold
                         )
 
                         Spacer(
-                            modifier = Modifier.height(16.dp)
+                            modifier = Modifier.height(22.dp)
                         )
                     }
                 }
@@ -131,7 +139,7 @@ fun PasajerosScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Registrar Nuevo Pasajero")
+                Text(text = "+ Registrar Pasajero")
             }
 
             Spacer(

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Header(
     title: String,
-    backgroundColor: Color = Color(0xFFB71C1C),
+    backgroundColor: Color = Color(0xFF17324D),
     textColor: Color = Color.White
 ) {
     Box(

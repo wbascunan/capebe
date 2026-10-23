@@ -10,6 +10,7 @@ import com.example.capebe.data.database.AppDatabase
 import com.example.capebe.data.local.entity.VueloEntity
 import com.example.capebe.model.VueloModel
 import kotlinx.coroutines.launch
+import kotlin.math.round
 
 class VueloViewModel : ViewModel() {
 
@@ -73,14 +74,23 @@ class VueloViewModel : ViewModel() {
             state.horometroFinal.isBlank()
         ) {
             uiState = uiState.copy(
-                errorMessage = "Por favor completa todos los campos."
+                errorMessage = "Completa todos los campos."
             )
             return
         }
 
-        val tripulantes = state.numeroTripulantes.toIntOrNull()
-        val horometroInicial = state.horometroInicial.toDoubleOrNull()
-        val horometroFinal = state.horometroFinal.toDoubleOrNull()
+        val tripulantes =
+            state.numeroTripulantes.toIntOrNull()
+
+        val horometroInicial =
+            state.horometroInicial
+                .replace(",", ".")
+                .toDoubleOrNull()
+
+        val horometroFinal =
+            state.horometroFinal
+                .replace(",", ".")
+                .toDoubleOrNull()
 
         if (
             tripulantes == null ||
@@ -88,19 +98,36 @@ class VueloViewModel : ViewModel() {
             horometroFinal == null
         ) {
             uiState = uiState.copy(
-                errorMessage = "Ingresa valores numéricos válidos."
+                errorMessage = "Revisa los valores numéricos ingresados."
             )
             return
         }
 
-        if (horometroFinal < horometroInicial) {
+        if (tripulantes <= 0) {
             uiState = uiState.copy(
-                errorMessage = "El horómetro final no puede ser menor al inicial."
+                errorMessage = "El número de tripulantes debe ser mayor a 0."
             )
             return
         }
 
-        val horasConsumidas = horometroFinal - horometroInicial
+        if (horometroInicial < 0 || horometroFinal < 0) {
+            uiState = uiState.copy(
+                errorMessage = "Las lecturas del horómetro no pueden ser negativas."
+            )
+            return
+        }
+
+        if (horometroFinal <= horometroInicial) {
+            uiState = uiState.copy(
+                errorMessage = "La lectura final debe ser mayor a la inicial."
+            )
+            return
+        }
+
+        val diferencia = horometroFinal - horometroInicial
+
+        val horasConsumidas =
+            round(diferencia * 100) / 100
 
         viewModelScope.launch {
 
