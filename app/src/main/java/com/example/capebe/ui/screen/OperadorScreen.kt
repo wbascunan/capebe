@@ -30,6 +30,7 @@ fun OperadorScreen(
     onNavigateToPasajeros: () -> Unit,
     onNavigateToPasajerosApi: () -> Unit,
     onNavigateToVuelos: () -> Unit,
+    onNavigateToVuelosApi: () -> Unit,
     viewModel: ResumenOperacionalViewModel = viewModel()
 ){
     val context = LocalContext.current
@@ -253,6 +254,24 @@ fun OperadorScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+// Vuelos guardados en PostgreSQL mediante Retrofit.
+            Button(
+                onClick = {
+                    onNavigateToVuelosApi()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(58.dp)
+            ) {
+                Text(
+                    text = "Vuelos",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
         }
     }
 }
