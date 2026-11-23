@@ -31,6 +31,7 @@ fun OperadorScreen(
     onNavigateToPasajerosApi: () -> Unit,
     onNavigateToVuelos: () -> Unit,
     onNavigateToVuelosApi: () -> Unit,
+    onNavigateToAsignacionesApi: () -> Unit,
     viewModel: ResumenOperacionalViewModel = viewModel()
 ){
     val context = LocalContext.current
@@ -271,6 +272,25 @@ fun OperadorScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
+
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+// Abrir asignaciones guardadas en PostgreSQL.
+            Button(
+                onClick = {
+                    onNavigateToAsignacionesApi()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(58.dp)
+            ) {
+                Text(
+                    "Asignaciones",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
 
         }
     }
