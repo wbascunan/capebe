@@ -20,6 +20,11 @@ import com.example.capebe.ui.screen.PasajerosApiScreen
 import com.example.capebe.ui.screen.VuelosApiScreen
 import com.example.capebe.ui.screen.AsignacionesApiScreen
 import com.example.capebe.model.RolUsuario
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
+
 object Routes {
     const val INICIO = "inicio"
     const val LOGIN = "login"
@@ -42,6 +47,10 @@ object Routes {
 fun AppNavigation() {
 
     val navController = rememberNavController()
+    // Nombre del usuario que inicio sesion.
+    var nombreUsuario by rememberSaveable {
+        mutableStateOf("")
+    }
 
     NavHost(
         navController = navController,
@@ -61,9 +70,9 @@ fun AppNavigation() {
                 onNavigateToRegister = {
                     navController.navigate(Routes.REGISTER)
                 },
-                onLoginSuccess = { rol ->
+                onLoginSuccess = { nombre, rol ->
 
-                    // Navegar segun el rol guardado en SQLite.
+                    // El rol determina que panel se abre.
                     val destino = when (rol) {
                         RolUsuario.INVITADO.name -> Routes.INVITADO
                         RolUsuario.COLABORADOR.name -> Routes.OPERADOR
@@ -71,8 +80,9 @@ fun AppNavigation() {
                     }
 
                     if (destino != null) {
+                        nombreUsuario = nombre
+
                         navController.navigate(destino) {
-                            // Evitar regresar al login con el boton Atras.
                             popUpTo(Routes.LOGIN) {
                                 inclusive = true
                             }
@@ -94,6 +104,7 @@ fun AppNavigation() {
 
         composable(Routes.OPERADOR) {
             OperadorScreen(
+                nombreUsuario = nombreUsuario,
                 onNavigateToPasajeros = {
                     navController.navigate(Routes.PASAJEROS)
                 },
@@ -112,6 +123,7 @@ fun AppNavigation() {
                     navController.navigate(Routes.ASIGNACIONES_API)
                 },
                 onCerrarSesion = {
+                    nombreUsuario = ""
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(Routes.INICIO) {
                             inclusive = false
@@ -221,7 +233,10 @@ fun AppNavigation() {
         }
         composable(Routes.INVITADO) {
             InvitadoScreen(
+                nombreUsuario = nombreUsuario,
                 onCerrarSesion = {
+                    nombreUsuario = ""
+
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(Routes.INICIO) {
                             inclusive = false

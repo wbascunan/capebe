@@ -15,10 +15,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Header
 import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.viewmodel.VueloApiViewModel
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 
 @Composable
 fun InvitadoScreen(
     onCerrarSesion: () -> Unit,
+    nombreUsuario : String,
     vm: VueloApiViewModel = viewModel()
 ) {
     val vuelos by vm.vuelos.observeAsState(emptyList())
@@ -43,6 +46,35 @@ fun InvitadoScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
+            // Identificacion del usuario invitado.
+            Text(
+                text = "Bienvenido, $nombreUsuario",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+
+            Surface(
+                color = Color(0xFFE1EBF5),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "INVITADO",
+                    modifier = Modifier.padding(
+                        horizontal = 12.dp,
+                        vertical = 6.dp
+                    ),
+                    color = Color(0xFF17324D),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Text(
+                text = "Modo consulta: puedes ver vuelos, " +
+                        "pero no registrar operaciones.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Panel de invitado",
                 style = MaterialTheme.typography.headlineSmall,

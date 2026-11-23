@@ -25,6 +25,8 @@ import com.example.capebe.ui.viewmodel.ResumenOperacionalViewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 
 @Composable
 fun OperadorScreen(
@@ -34,6 +36,7 @@ fun OperadorScreen(
     onNavigateToVuelosApi: () -> Unit,
     onNavigateToAsignacionesApi: () -> Unit,
     onCerrarSesion: () -> Unit,
+    nombreUsuario: String,
     viewModel: ResumenOperacionalViewModel = viewModel()
 ){
     val context = LocalContext.current
@@ -56,7 +59,29 @@ fun OperadorScreen(
 
         ) {
 
+            // Identificacion del usuario autenticado.
+            Text(
+                text = "Bienvenido, $nombreUsuario",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
 
+            Surface(
+                color = Color(0xFFE1EBF5),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "COLABORADOR",
+                    modifier = Modifier.padding(
+                        horizontal = 12.dp,
+                        vertical = 6.dp
+                    ),
+                    color = Color(0xFF17324D),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Panel operacional",
                 style = MaterialTheme.typography.headlineMedium,

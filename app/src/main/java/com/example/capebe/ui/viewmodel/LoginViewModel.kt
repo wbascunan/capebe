@@ -31,7 +31,7 @@ class LoginViewModel : ViewModel() {
 
     fun onLoginClick(
         context: Context,
-        onSuccess: (String) -> Unit
+        onSuccess: (String, String) -> Unit
     ) {
         val email = uiState.email
         val password = uiState.password
@@ -57,7 +57,7 @@ class LoginViewModel : ViewModel() {
                         errorMessage = null
 
                         // Antes onSuccess() no entregaba el rol.
-                        onSuccess(user.rol)
+                        onSuccess(user.name, user.rol)
                     }
 
                     else -> {
