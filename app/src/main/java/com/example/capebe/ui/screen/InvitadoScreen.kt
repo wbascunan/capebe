@@ -17,6 +17,8 @@ import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.viewmodel.VueloApiViewModel
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun InvitadoScreen(
@@ -26,7 +28,7 @@ fun InvitadoScreen(
 ) {
     val vuelos by vm.vuelos.observeAsState(emptyList())
     val error by vm.error.observeAsState()
-
+    val context = LocalContext.current
     // Consultar vuelos al entrar como invitado.
     LaunchedEffect(Unit) {
         vm.cargar()
@@ -116,8 +118,7 @@ fun InvitadoScreen(
             if (vuelos.isEmpty() && error == null) {
                 Text("No hay vuelos para mostrar.")
             }
-
-            // Consulta de vuelos sin permitir modificaciones.
+// Consulta de vuelos sin permitir modificaciones.
             vuelos.forEach { vuelo ->
                 Card(
                     modifier = Modifier.fillMaxWidth()
@@ -126,7 +127,6 @@ fun InvitadoScreen(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-
                         Text(
                             text = "${vuelo.matricula} - ${vuelo.modelo}",
                             fontWeight = FontWeight.Bold
@@ -137,6 +137,32 @@ fun InvitadoScreen(
 
                         vuelo.horasVueloConsumidas?.let { horas ->
                             Text("Horas de vuelo: $horas")
+                        }
+
+                        // Recurso nativo: compartir informacion del vuelo.
+                        Button(
+                            onClick = {
+                                val mensaje = """
+                                    Club Aéreo CAPEBE
+                                    Matrícula: ${vuelo.matricula}
+                                    Modelo: ${vuelo.modelo}
+                                """.trimIndent()
+
+                                val intent = Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_TEXT, mensaje)
+                                }
+
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        intent,
+                                        "Compartir información del vuelo"
+                                    )
+                                )
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Compartir vuelo")
                         }
                     }
                 }
