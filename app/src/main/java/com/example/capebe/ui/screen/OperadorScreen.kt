@@ -22,12 +22,16 @@ import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.components.Header
 import com.example.capebe.ui.viewmodel.ResumenOperacionalViewModel
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 @Composable
 fun OperadorScreen(
     onNavigateToPasajeros: () -> Unit,
+    onNavigateToPasajerosApi: () -> Unit,
     onNavigateToVuelos: () -> Unit,
     viewModel: ResumenOperacionalViewModel = viewModel()
-) {
+){
     val context = LocalContext.current
 
     Scaffold(
@@ -43,8 +47,10 @@ fun OperadorScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
+
 
             Text(
                 text = "Panel operacional",
@@ -208,6 +214,27 @@ fun OperadorScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
+
+
+            Spacer(
+                modifier = Modifier.height(10.dp)
+            )
+
+// Pasajeros desde PostgreSQL mediante Retrofit.
+            Button(
+                onClick = {
+                    onNavigateToPasajerosApi()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(58.dp)
+            ) {
+                Text(
+                    text = "Pasajeros",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
 
             Spacer(
                 modifier = Modifier.height(10.dp)

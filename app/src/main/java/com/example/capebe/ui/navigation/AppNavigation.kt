@@ -15,6 +15,7 @@ import com.example.capebe.ui.screen.RegistroVueloScreen
 import com.example.capebe.ui.screen.VuelosScreen
 import com.example.capebe.ui.screen.AsignacionScreen
 import com.example.capebe.ui.screen.CamaraScreen
+import com.example.capebe.ui.screen.PasajerosApiScreen
 
 object Routes {
     const val INICIO = "inicio"
@@ -28,6 +29,7 @@ object Routes {
     const val CONSENTIMIENTO = "consentimiento"
     const val ASIGNACION = "asignacion"
     const val CAMARA = "camara"
+    const val PASAJEROS_API = "pasajeros_api"
 }
 
 @Composable
@@ -67,16 +69,21 @@ fun AppNavigation() {
             )
         }
 
+
         composable(Routes.OPERADOR) {
             OperadorScreen(
                 onNavigateToPasajeros = {
                     navController.navigate(Routes.PASAJEROS)
+                },
+                onNavigateToPasajerosApi = {
+                    navController.navigate(Routes.PASAJEROS_API)
                 },
                 onNavigateToVuelos = {
                     navController.navigate(Routes.VUELOS)
                 }
             )
         }
+
 
         composable(Routes.PASAJEROS) {
             PasajerosScreen(
@@ -148,5 +155,14 @@ fun AppNavigation() {
                 }
             )
         }
+
+        composable(Routes.PASAJEROS_API) {
+            PasajerosApiScreen(
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
     }
 }
