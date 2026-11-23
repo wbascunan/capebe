@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.capebe.data.database.AppDatabase
 import com.example.capebe.model.LoginModel
 import kotlinx.coroutines.launch
+import com.example.capebe.model.RolUsuario
 
 class LoginViewModel : ViewModel() {
 
@@ -30,7 +31,7 @@ class LoginViewModel : ViewModel() {
 
     fun onLoginClick(
         context: Context,
-        onSuccess: () -> Unit
+        onSuccess: (String) -> Unit
     ) {
         val email = uiState.email
         val password = uiState.password
@@ -48,11 +49,23 @@ class LoginViewModel : ViewModel() {
 
             if (user != null && user.password == password) {
 
-                errorMessage = null
-                onSuccess()
+                // Validar el rol guardado en SQLite.
+                when (user.rol) {
+
+                    RolUsuario.INVITADO.name,
+                    RolUsuario.COLABORADOR.name -> {
+                        errorMessage = null
+
+                        // Antes onSuccess() no entregaba el rol.
+                        onSuccess(user.rol)
+                    }
+
+                    else -> {
+                        errorMessage = "El usuario tiene un rol no válido."
+                    }
+                }
 
             } else {
-
                 errorMessage = "Correo o contraseña incorrectos."
             }
         }

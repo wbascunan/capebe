@@ -26,6 +26,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.capebe.ui.components.Footer
 import com.example.capebe.ui.components.Header
 import com.example.capebe.ui.viewmodel.RegisterViewModel
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.FilterChip
+import com.example.capebe.model.RolUsuario
 
 @Composable
 fun RegisterScreen(
@@ -49,15 +54,46 @@ fun RegisterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
 
             Text(
                 "R e g i s t r o",
                 style = MaterialTheme.typography.headlineMedium
             )
+            // Seleccionar el rol que se guardara en Room.
+            Text(
+                text = "Tipo de cuenta",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                FilterChip(
+                    selected = viewModel.rol == RolUsuario.INVITADO,
+                    onClick = {
+                        viewModel.onRolChanged(RolUsuario.INVITADO)
+                    },
+                    label = { Text("Invitado") },
+                    modifier = Modifier.weight(1f)
+                )
+
+                FilterChip(
+                    selected = viewModel.rol == RolUsuario.COLABORADOR,
+                    onClick = {
+                        viewModel.onRolChanged(RolUsuario.COLABORADOR)
+                    },
+                    label = { Text("Colaborador") },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Spacer(
                 modifier = Modifier.height(16.dp)

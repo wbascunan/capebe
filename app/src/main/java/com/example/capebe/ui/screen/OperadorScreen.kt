@@ -24,6 +24,7 @@ import com.example.capebe.ui.viewmodel.ResumenOperacionalViewModel
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedButton
 
 @Composable
 fun OperadorScreen(
@@ -32,6 +33,7 @@ fun OperadorScreen(
     onNavigateToVuelos: () -> Unit,
     onNavigateToVuelosApi: () -> Unit,
     onNavigateToAsignacionesApi: () -> Unit,
+    onCerrarSesion: () -> Unit,
     viewModel: ResumenOperacionalViewModel = viewModel()
 ){
     val context = LocalContext.current
@@ -51,6 +53,7 @@ fun OperadorScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
+
         ) {
 
 
@@ -290,6 +293,16 @@ fun OperadorScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
+            Spacer(modifier = Modifier.height(20.dp))
+
+// Cerrar sesion del colaborador.
+            OutlinedButton(
+                onClick = onCerrarSesion,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Cerrar sesión")
+            }
+
 
 
         }

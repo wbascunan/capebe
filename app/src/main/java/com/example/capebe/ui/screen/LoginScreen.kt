@@ -30,7 +30,7 @@ import com.example.capebe.ui.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen(
     onNavigateToRegister: () -> Unit,
-    onLoginSuccess: () -> Unit,
+    onLoginSuccess: (String) -> Unit,
     viewModel: LoginViewModel = viewModel()
 ) {
     val state = viewModel.uiState
@@ -118,7 +118,7 @@ fun LoginScreen(
             Button(
                 onClick = {
 
-                    viewModel.onLoginClick(context) {
+                    viewModel.onLoginClick(context) { rol ->
 
                         Toast.makeText(
                             context,
@@ -126,7 +126,7 @@ fun LoginScreen(
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        onLoginSuccess()
+                        onLoginSuccess(rol)
                     }
                 },
                 modifier = Modifier.fillMaxWidth()

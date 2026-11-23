@@ -10,11 +10,21 @@ import com.example.capebe.data.database.AppDatabase
 import com.example.capebe.data.local.entity.UsuarioEntity
 import com.example.capebe.model.RegisterModel
 import kotlinx.coroutines.launch
+import com.example.capebe.model.RolUsuario
 
 class RegisterViewModel : ViewModel() {
 
     var uiState by mutableStateOf(RegisterModel())
         private set
+    // Rol seleccionado al crear la cuenta.
+    // Por defecto, las cuentas nuevas son Invitado.
+    var rol by mutableStateOf(RolUsuario.INVITADO)
+        private set
+
+    fun onRolChanged(nuevoRol: RolUsuario) {
+        rol = nuevoRol
+        uiState = uiState.copy(errorMessage = null)
+    }
 
     fun onNameChanged(name: String) {
         uiState = uiState.copy(name = name, errorMessage = null)
@@ -77,7 +87,8 @@ class RegisterViewModel : ViewModel() {
                 val newUser = UsuarioEntity(
                     name = state.name,
                     email = state.email,
-                    password = state.password
+                    password = state.password,
+                    rol = rol.name
                 )
 
                 db.usuarioDao().registerUser(newUser)

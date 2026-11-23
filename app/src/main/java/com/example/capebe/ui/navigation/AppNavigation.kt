@@ -1,6 +1,7 @@
 package com.example.capebe.ui.navigation
 
 import androidx.compose.runtime.Composable
+import com.example.capebe.ui.screen.InvitadoScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -18,6 +19,7 @@ import com.example.capebe.ui.screen.CamaraScreen
 import com.example.capebe.ui.screen.PasajerosApiScreen
 import com.example.capebe.ui.screen.VuelosApiScreen
 import com.example.capebe.ui.screen.AsignacionesApiScreen
+import com.example.capebe.model.RolUsuario
 object Routes {
     const val INICIO = "inicio"
     const val LOGIN = "login"
@@ -33,6 +35,7 @@ object Routes {
     const val PASAJEROS_API = "pasajeros_api"
     const val VUELOS_API = "vuelos_api"
     const val ASIGNACIONES_API = "asignaciones_api"
+    const val INVITADO = "invitado"
 }
 
 @Composable
@@ -58,8 +61,24 @@ fun AppNavigation() {
                 onNavigateToRegister = {
                     navController.navigate(Routes.REGISTER)
                 },
-                onLoginSuccess = {
-                    navController.navigate(Routes.OPERADOR)
+                onLoginSuccess = { rol ->
+
+                    // Navegar segun el rol guardado en SQLite.
+                    val destino = when (rol) {
+                        RolUsuario.INVITADO.name -> Routes.INVITADO
+                        RolUsuario.COLABORADOR.name -> Routes.OPERADOR
+                        else -> null
+                    }
+
+                    if (destino != null) {
+                        navController.navigate(destino) {
+                            // Evitar regresar al login con el boton Atras.
+                            popUpTo(Routes.LOGIN) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    }
                 }
             )
         }
@@ -92,6 +111,14 @@ fun AppNavigation() {
                 onNavigateToAsignacionesApi = {
                     navController.navigate(Routes.ASIGNACIONES_API)
                 },
+                onCerrarSesion = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.INICIO) {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+                }
 
 
                 )
@@ -189,6 +216,18 @@ fun AppNavigation() {
             AsignacionesApiScreen(
                 onVolver = {
                     navController.popBackStack()
+                }
+            )
+        }
+        composable(Routes.INVITADO) {
+            InvitadoScreen(
+                onCerrarSesion = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.INICIO) {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
                 }
             )
         }
